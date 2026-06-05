@@ -1,10 +1,21 @@
+// lib/main.dart
+import 'package:assi/screens/Courses%20screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'app_theme.dart';
+import 'controllers/auth_controller.dart';
+import 'screens/register_screen.dart';
 import 'screens/login_screen.dart';
-import 'screens/registration_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/detail_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AuthController(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,52 +24,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Multi-Screen App',
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-      initialRoute: '/',
+      title: 'EduApp',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.theme,
+      initialRoute: AppRoutes.register,
       routes: {
-        '/': (context) => const SplashScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/register': (context) => const RegistrationScreen(),
-        '/dashboard': (context) => const DashboardScreen(),
+        AppRoutes.register:  (_) => const RegisterScreen(),
+        AppRoutes.login:     (_) => const LoginScreen(),
+        AppRoutes.dashboard: (_) => const DashboardScreen(),
+        AppRoutes.detail:    (_) => const DetailScreen(),
+        AppRoutes.courses:   (_) => const CoursesScreen(),
       },
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/login');
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.flutter_dash, size: 80, color: Colors.blue),
-            SizedBox(height: 20),
-            Text('Multi-Screen App', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            CircularProgressIndicator(),
-          ],
-        ),
-      ),
     );
   }
 }

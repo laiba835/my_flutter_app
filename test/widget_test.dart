@@ -1,40 +1,30 @@
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_app/main.dart';
+
+import 'package:assi/main.dart';
 
 void main() {
-  testWidgets('App launches successfully', (WidgetTester tester) async {
-    // Build the app
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
-    
-    // Wait for splash screen to navigate
-    await tester.pump(const Duration(seconds: 2));
-    
-    // Verify login screen appears
-    expect(find.text('Welcome Back'), findsOneWidget);
-    expect(find.text('Login'), findsOneWidget);
-  });
 
-  testWidgets('Login screen has email and password fields', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
-    await tester.pump(const Duration(seconds: 2));
-    
-    // Find email and password fields
-    expect(find.byType(TextFormField), findsAtLeast(2));
-    expect(find.text('Login'), findsOneWidget);
-    expect(find.text('Register'), findsOneWidget);
-  });
+    // Verify that our counter starts at 0.
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
 
-  testWidgets('Navigate to registration screen', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
-    await tester.pump(const Duration(seconds: 2));
-    
-    // Tap on Register button
-    await tester.tap(find.text('Register'));
-    await tester.pumpAndSettle();
-    
-    // Verify registration screen appears
-    expect(find.text('Create Account'), findsOneWidget);
-    expect(find.text('Register'), findsWidgets);
+    // Tap the '+' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    // Verify that our counter has incremented.
+    expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
   });
 }
